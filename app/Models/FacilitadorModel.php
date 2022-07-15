@@ -14,7 +14,16 @@ class FacilitadorModel extends Model
     // protected $returnType     = 'array';
     // protected $useSoftDeletes = true;
 
-    // protected $allowedFields = ['name', 'email'];
+    protected $allowedFields = [
+        'id_facilitador',
+        'ci',
+        'nombres',
+        'paterno',
+        'materno',
+        'genero',
+        'celular',
+        'correo'
+    ];
 
     // protected $useTimestamps = false;
     // protected $createdField  = 'created_at';

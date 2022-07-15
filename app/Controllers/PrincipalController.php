@@ -6,6 +6,6 @@ class PrincipalController extends BaseController
 {
     public function index()
     {
-        return $this->templater->view('principal', []);
+        return $this->templater->view('principal', ['title'=>'']);
     }
 }

@@ -37,6 +37,10 @@ class Validation extends BaseConfig
         'list'   => 'CodeIgniter\Validation\Views\list',
         'single' => 'CodeIgniter\Validation\Views\single',
     ];
+    public $facilitadores = [
+        'ci'=>'required|min_length[3]',
+        'nombres'=>'required|min_length[3]'
+    ];
 
     //--------------------------------------------------------------------
     // Rules

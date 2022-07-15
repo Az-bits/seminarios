@@ -1,8 +1,5 @@
-<div class="row">
-    <h1 class="text-center"><?= $title ?></h1>
-</div>
 <div class="d-flex justify-content-end">
-    <a href="/facilitadores/new" class="btn btn-primary">Crear</a>
+    <a href="/facilitadores/new" class="btn btn-primary ws-100">Crear</a>
 </div>
 <table class="table table-bordered border-primary mt-1">
     <thead>

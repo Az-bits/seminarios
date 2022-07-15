@@ -38,6 +38,11 @@ $routes->set404Override();
 // $routes->get('/', 'Home::index');
 $routes->get('/', 'PrincipalController::index');
 $routes->resource('facilitadores', ['controller' => 'Seminarios\FacilitadoresController', 'except' => ['show']]);
+// $routes->resource('facilitadores', ['except' => ['show']]);
+// $routes->post('facilitadores','Facilitadores::create');
+// $routes->get('/facilitadores/new','Facilitadores::new');
+// $routes->get('/facilitadores','Facilitadores::index');
+
 
 /*
  * --------------------------------------------------------------------
