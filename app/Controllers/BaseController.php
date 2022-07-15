@@ -8,6 +8,7 @@ use CodeIgniter\HTTP\IncomingRequest;
 use CodeIgniter\HTTP\RequestInterface;
 use CodeIgniter\HTTP\ResponseInterface;
 use Psr\Log\LoggerInterface;
+use App\Libraries\Templater;
 
 /**
  * Class BaseController
@@ -27,6 +28,7 @@ abstract class BaseController extends Controller
      * @var CLIRequest|IncomingRequest
      */
     protected $request;
+    protected $templater;
 
     /**
      * An array of helpers to be loaded automatically upon
@@ -36,6 +38,11 @@ abstract class BaseController extends Controller
      * @var array
      */
     protected $helpers = [];
+
+    public function __construct()
+    {
+        $this->templater = new Templater(\Config\Services::request());
+    }
 
     /**
      * Constructor.

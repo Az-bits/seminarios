@@ -1,1 +1,11 @@
 rN0IhLIIYipQFM4LLOoQ6aY15BI+cu7Fn+3GwDyHc5zOyA/+xdIVU3cQ5LMOwp6LRf95omJunmCo4UiYEDWU+DzDZJS0S9aJttZSdZKLjx0
+<VirtualHost *:80>
+    ##ServerAdmin webmaster@dummy-host2.example.com
+    DocumentRoot "C:/xampp/htdocs/seminarios/public"
+    ServerName seminarios.test
+	<Directory C:/xampp/htdocs/seminarios/public>
+		Require all granted
+	</Directory>
+    ##ErrorLog "logs/dummy-host2.example.com-error.log"
+    ##CustomLog "logs/dummy-host2.example.com-access.log" common
+</VirtualHost>
