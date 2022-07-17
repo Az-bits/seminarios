@@ -15,7 +15,6 @@ class FacilitadorModel extends Model
     // protected $useSoftDeletes = true;
 
     protected $allowedFields = [
-        'id_facilitador',
         'ci',
         'nombres',
         'paterno',

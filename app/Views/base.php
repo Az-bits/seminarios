@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 
 <head>
     <meta charset="UTF-8">
@@ -14,15 +14,20 @@
 <body>
     <?= $header ?>
     <div class="container mt-2 ">
+        <?= view('dashboard/partials/_session') ?>
         <!-- <div class="row vh-100 justify-content-center align-items-center"> -->
         <h1 class="text-center mt-1"><?= $title ?></h1>
         <?= $content ?>
         <!-- </div> -->
     </div>
     <?= $footer ?>
+    <script defer src="https://use.fontawesome.com/releases/v6.1.1/js/all.js" integrity="sha384-xBXmu0dk1bEoiwd71wOonQLyH+VpgR1XcDH3rtxrLww5ajNTuMvBdL5SOiFZnNdp" crossorigin="anonymous"></script>
     <script src="<?= base_url('bootstrap/js/popper.min.js') ?>"></script>
     <script src="<?= base_url('bootstrap/js/bootstrap.min.js') ?>"></script>
-    <script src=""></script>
+    <script script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js "> </script>
+    <script src="https://unpkg.com/imask"></script>
+    <script src="<?= base_url('js/App.js') ?>" type="module"></script>
+
 </body>
 
 </html>

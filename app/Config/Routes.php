@@ -37,7 +37,9 @@ $routes->set404Override();
 // route since we don't have to scan directories.
 // $routes->get('/', 'Home::index');
 $routes->get('/', 'PrincipalController::index');
-$routes->resource('facilitadores', ['controller' => 'Seminarios\FacilitadoresController', 'except' => ['show']]);
+// $routes->resource('facilitadores', ['controller' => 'Seminarios\FacilitadoresController']);
+$routes->presenter('facilitadores', ['controller' => 'Seminarios\FacilitadoresController']);
+// $routes->resource('facilitadores');
 // $routes->resource('facilitadores', ['except' => ['show']]);
 // $routes->post('facilitadores','Facilitadores::create');
 // $routes->get('/facilitadores/new','Facilitadores::new');

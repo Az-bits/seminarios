@@ -2,6 +2,14 @@
 	background: #006fff;
 	color: #fff;
 }
-.ws-100{
-	width: 100px;
+.ws-120 {
+	width: 120px;
+}
+body {
+	background: #f5f8fa;
+}
+.logo-style {
+	width: 64px;
+	height: 64px;
+	margin-right: 40px;
 }

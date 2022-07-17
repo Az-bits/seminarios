@@ -34,12 +34,18 @@ class Validation extends BaseConfig
      * @var array<string, string>
      */
     public $templates = [
-        'list'   => 'CodeIgniter\Validation\Views\list',
+        // 'list'   => 'CodeIgniter\Validation\Views\list',
+        'list'   => 'App\Views\Validations\list_bootstrap',
         'single' => 'CodeIgniter\Validation\Views\single',
     ];
     public $facilitadores = [
-        'ci'=>'required|min_length[3]',
-        'nombres'=>'required|min_length[3]'
+        'ci' => ['label' => 'cedula identidad', 'rules' => 'required|is_natural_no_zero|min_length[7]|max_length[9]|is_unique[facilitadores.ci,id_facilitador,{id}]'],
+        'nombres' => 'required|min_length[3]',
+        'paterno' => 'required|min_length[3]',
+        'celular' => 'required|min_length[8]|max_length[8]|is_natural_no_zero',
+        'genero' => 'required',
+        'correo' => 'required|min_length[3]|max_length[20]|is_unique[facilitadores.correo,id_facilitador,{id}]|valid_email',
+        'comple' => ['label' => 'complemento', 'rules' => 'max_length[3]'],
     ];
 
     //--------------------------------------------------------------------
