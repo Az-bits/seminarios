@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Controllers\Seminarios;
+namespace App\Controllers\Seminarios\Capacitaciones;
 
 use App\Models\CursosModel;
 use \CodeIgniter\Exceptions\PageNotFoundException;
@@ -9,7 +9,7 @@ use App\Models\FacilitadorModel;
 use App\Models\MaestroCapacitacionesModel;
 use CodeIgniter\RESTful\ResourcePresenter;
 
-class CapacitacionesController extends ResourcePresenter
+class ListadoController extends ResourcePresenter
 {
     protected $templater;
     public function __construct()
@@ -19,9 +19,10 @@ class CapacitacionesController extends ResourcePresenter
     public function index()
     {
         $capacitacion  = new MaestroCapacitacionesModel();
-        $capacitacionData = $capacitacion->select('mae_capacitaciones.*,nombre_curso')
+        $capacitacionData = $capacitacion->select('mae_capacitaciones.id_mae_capacitacion,fecha_ini,fecha_fin ,c.nombre_curso,count(nombre_curso) as cantidad')
             ->join('cursos as c', 'c.id_curso= mae_capacitaciones.id_curso')
             ->join('det_capacitaciones as d', 'd.id_mae_capacitacion = mae_capacitaciones.id_mae_capacitacion')
+            ->groupBy('mae_capacitaciones.id_mae_capacitacion , c.nombre_curso')
             ->paginate(5);
         $data = [
             'title' => 'Capacitaciones',
@@ -29,36 +30,33 @@ class CapacitacionesController extends ResourcePresenter
             'pager' => $capacitacion->pager
         ];
         // var_dump($data['cursos']);
-        return $this->templater->view('capacitaciones/ListCapacitaciones', $data);
+        return $this->templater->view('capacitaciones/listado/ListCapacitaciones', $data);
     }
     public function new()
     {
         session(); //para que aparescan la lista de errores de validacion esto es un bug
         $validation =  \Config\Services::validation();
-        $facilitadores = new FacilitadorModel();
-        $facilitadoresData = $facilitadores->select('id_facilitador,ci,concat(nombres," ",paterno," ",materno) as nombre_facilitador')
-            ->findAll();
-        $curso  = [
-            'id_curso' => null,
-            'nombre_curso' => '',
-            'modalidad' => '',
-            'precio' => '',
-            'id_facilitador' => null
+        $cursos = new CursosModel();
+        $capacitaciones = [
+            'id_mae_capacitacion' => null,
+            'fecha_ini' => '',
+            'fecha_fin' => '',
+            'id_curso' => '',
         ];
         $data = [
-            'title' => 'Nuevo Curso',
-            'curso' => $curso,
-            'facilitadores' => $facilitadoresData,
+            'title' => 'Nueva Capacitacion',
+            'cursos' => $cursos->findAll(),
+            'capacitaciones' => $capacitaciones,
             'validation' => $validation
         ];
-        return $this->templater->view('cursos/new', $data);
+        return $this->templater->view('capacitaciones/listado/new', $data);
     }
     public function edit($id = null)
     {
         session();
         $validation =  \Config\Services::validation();
         $curso = new CursosModel();
-        $facilitadores = new FacilitadorModel();
+        $capacitaciones = new FacilitadorModel();
         $facilitadoresData = $facilitadores->select('id_facilitador,ci,concat(nombres," ",paterno," ",materno) as nombre_facilitador')
             ->findAll();
         if ($curso->find($id) == null) {
@@ -75,15 +73,15 @@ class CapacitacionesController extends ResourcePresenter
     }
     public function create()
     {
-        $newCurso = new CursosModel();
-        if ($this->validate('cursos')) {
-            $newCurso->insert([
-                'nombre_curso' => trim($this->request->getPost('nombre_curso')),
-                'modalidad' => $this->request->getPost('modalidad'),
-                'precio' => trim($this->request->getPost('precio')),
-                'id_facilitador' => $this->request->getPost('id_facilitador'),
+        var_dump($_REQUEST);
+        $newCapacitacion = new MaestroCapacitacionesModel();
+        if ($this->validate('listado')) {
+            $newCapacitacion->insert([
+                'id_curso' => trim($this->request->getPost('id_curso')),
+                'fecha_ini' => $this->request->getPost('fecha_ini'),
+                'fecha_fin' => $this->request->getPost('fecha_fin'),
             ]);
-            return redirect()->to('/cursos')->with('message', 'Curso creado correctamente.');
+            return redirect()->to('/capacitaciones/listado')->with('message', 'Capacitacion creada correctamente.');
         }
         return redirect()->back()->withInput();
     }

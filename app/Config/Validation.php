@@ -62,6 +62,8 @@ class Validation extends BaseConfig
         'correo' => 'required|min_length[3]|max_length[20]|is_unique[participantes.correo,id_participante,{id}]|valid_email',
         'comple' => ['label' => 'complemento', 'rules' => 'max_length[3]'],
     ];
+    public $listado = ['id_curso' => 'required'];
+    public $inscriciones = [];
 
     //--------------------------------------------------------------------
     // Rules

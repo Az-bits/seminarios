@@ -41,6 +41,8 @@ $routes->get('/', 'PrincipalController::index');
 $routes->presenter('facilitadores', ['controller' => 'Seminarios\FacilitadoresController', 'except' => ['show', 'remove']]);
 $routes->presenter('cursos', ['controller' => 'Seminarios\CursosController', 'except' => ['show', 'remove']]);
 $routes->presenter('participantes', ['controller' => 'Seminarios\ParticipantesController', 'except' => ['show', 'remove']]);
+$routes->presenter('capacitaciones/listado', ['controller' => 'Seminarios\Capacitaciones\ListadoController', 'except' => ['show', 'remove']]);
+$routes->presenter('capacitaciones/inscripciones', ['controller' => 'Seminarios\Capacitaciones\InscripcionesController', 'except' => ['show', 'remove']]);
 
 
 /*
