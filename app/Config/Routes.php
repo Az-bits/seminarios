@@ -35,15 +35,12 @@ $routes->set404Override();
 
 // We get a performance increase by specifying the default
 // route since we don't have to scan directories.
+
 // $routes->get('/', 'Home::index');
 $routes->get('/', 'PrincipalController::index');
-// $routes->resource('facilitadores', ['controller' => 'Seminarios\FacilitadoresController']);
-$routes->presenter('facilitadores', ['controller' => 'Seminarios\FacilitadoresController']);
-// $routes->resource('facilitadores');
-// $routes->resource('facilitadores', ['except' => ['show']]);
-// $routes->post('facilitadores','Facilitadores::create');
-// $routes->get('/facilitadores/new','Facilitadores::new');
-// $routes->get('/facilitadores','Facilitadores::index');
+$routes->presenter('facilitadores', ['controller' => 'Seminarios\FacilitadoresController', 'except' => ['show', 'remove']]);
+$routes->presenter('cursos', ['controller' => 'Seminarios\CursosController', 'except' => ['show', 'remove']]);
+$routes->presenter('participantes', ['controller' => 'Seminarios\ParticipantesController', 'except' => ['show', 'remove']]);
 
 
 /*

@@ -15,7 +15,7 @@
                     <a class="nav-link" href="/facilitadores">Facilitadores</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#">Cursos</a>
+                    <a class="nav-link" href="/cursos">Cursos</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="#">Capacitaciones</a>
