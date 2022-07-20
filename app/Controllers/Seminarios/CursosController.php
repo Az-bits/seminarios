@@ -18,8 +18,12 @@ class CursosController extends ResourcePresenter
     public function index()
     {
         $cursos  = new CursosModel();
-        $cursosData = $cursos->select('cursos.*, concat(f.nombres," ",f.paterno," ",f.materno) as nombre_facilitador')
+        $cursosData = $cursos->select('cursos.*, 
+        concat(f.nombres," ",f.paterno," ",f.materno) as nombre_facilitador,
+        ifnull(count(m.id_curso),0) as cantidad')
             ->join('facilitadores as f', 'f.id_facilitador= cursos.id_facilitador')
+            ->join('mae_capacitaciones as m', 'm.id_curso = cursos.id_curso', 'left')
+            ->groupBy('cursos.id_curso , m.id_curso ')
             ->paginate(5);
         $data = [
             'title' => 'Cursos',

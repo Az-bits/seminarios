@@ -19,7 +19,10 @@ class ParticipantesController extends ResourcePresenter
         $participantes  = new ParticipantesModel();
         $data = [
             'title' => 'Participantes',
-            'participantes' => $participantes->paginate(5),
+            'participantes' => $participantes->select('participantes.*,ifnull(count(d.id_det_capacitacion),0) as cantidad')
+                ->join('det_capacitaciones d', 'participantes.id_participante = d.id_participante', 'left')
+                ->groupBy('participantes.id_participante, d.id_det_capacitacion')
+                ->paginate(5),
             'pager' => $participantes->pager
         ];
         return $this->templater->view('participantes/participantesList', $data);
