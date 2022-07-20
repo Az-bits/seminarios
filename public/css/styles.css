@@ -13,3 +13,7 @@ body {
 	height: 64px;
 	margin-right: 40px;
 }
+button[disabled]:hover {
+	background: yellow;
+	cursor: pointer;
+}

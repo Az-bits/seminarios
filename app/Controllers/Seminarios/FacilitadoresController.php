@@ -17,9 +17,13 @@ class FacilitadoresController extends ResourcePresenter
     public function index()
     {
         $facilitador  = new FacilitadorModel();
+        $facilitadorData =  $facilitador->select('facilitadores.*,ifnull(count(c.id_facilitador),0) as cantidad')
+            ->join('cursos c', 'facilitadores.id_facilitador = c.id_facilitador', 'left')
+            ->groupBy('c.id_facilitador ')
+            ->paginate(5);
         $data = [
             'title' => 'Facilitadores',
-            'facilitador' => $facilitador->paginate(5),
+            'facilitador' => $facilitadorData,
             'pager' => $facilitador->pager
         ];
         return $this->templater->view('facilitador/index', $data);

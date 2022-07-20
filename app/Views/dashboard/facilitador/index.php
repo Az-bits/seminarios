@@ -26,7 +26,7 @@
                 <td><?= $value['correo'] ?></td>
                 <td>
                     <form action="/facilitadores/delete/<?= $value['id_facilitador'] ?>" method="POST">
-                        <button class="btn btn-danger btn-sm float-end ms-2" type="submit" data-bs-toggle="tooltip" data-bs-placement="top" title="Eliminar"><i class="fa-solid fa-trash "></i></button>
+                        <button <?= $value['cantidad'] == 0 ?: "disabled"  ?> class="btn btn-danger btn-sm float-end ms-2" type="submit" data-bs-toggle="tooltip" data-bs-placement="top" title="<?= $value['cantidad'] == 0 ? 'Eliminar' : 'Facilitador referenciado' ?>"><i class="fa-solid fa-trash "></i></button>
                     </form>
                     <a class="btn btn-primary btn-sm float-end " href="/facilitadores/edit/<?= $value['id_facilitador'] ?>" data-bs-toggle="tooltip" title="Editar"><i class="fa-solid fa-pencil"></i></a>
                 </td>
