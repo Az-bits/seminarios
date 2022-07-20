@@ -22,8 +22,8 @@
                         Capacitaciones
                     </a>
                     <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                        <li><a class="dropdown-item" href="/capacitaciones/listado">Listado</a></li>
-                        <li><a class="dropdown-item" href="/capacitaciones/inscripciones">Inscritos</a></li>
+                        <li><a class="dropdown-item" href="/capacitaciones/listado"><i class="fa-solid fa-list"></i> Listado</a></li>
+                        <li><a class="dropdown-item" href="/capacitaciones/inscripciones"><i class="fa-solid fa-pen-to-square"></i> Inscritos</a></li>
                     </ul>
                 </li>
                 <li class="nav-item">

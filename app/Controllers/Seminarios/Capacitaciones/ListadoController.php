@@ -19,13 +19,13 @@ class ListadoController extends ResourcePresenter
     public function index()
     {
         $capacitacion  = new MaestroCapacitacionesModel();
-        $capacitacionData = $capacitacion->select('mae_capacitaciones.id_mae_capacitacion,fecha_ini,fecha_fin ,c.nombre_curso,count(nombre_curso) as cantidad')
+        $capacitacionData = $capacitacion->select('mae_capacitaciones.id_mae_capacitacion,fecha_ini,fecha_fin ,nombre_curso,ifnull(count(d.id_mae_capacitacion),0) as cantidad')
             ->join('cursos as c', 'c.id_curso= mae_capacitaciones.id_curso')
-            ->join('det_capacitaciones as d', 'd.id_mae_capacitacion = mae_capacitaciones.id_mae_capacitacion')
-            ->groupBy('mae_capacitaciones.id_mae_capacitacion , c.nombre_curso')
+            ->join('det_capacitaciones as d', 'd.id_mae_capacitacion = mae_capacitaciones.id_mae_capacitacion', 'left')
+            ->groupBy('mae_capacitaciones.id_mae_capacitacion , d.id_mae_capacitacion')
             ->paginate(5);
         $data = [
-            'title' => 'Capacitaciones',
+            'title' => 'Lista de capacitaciones',
             'capacitaciones' => $capacitacionData,
             'pager' => $capacitacion->pager
         ];
@@ -56,26 +56,24 @@ class ListadoController extends ResourcePresenter
         session();
         $validation =  \Config\Services::validation();
         $curso = new CursosModel();
-        $capacitaciones = new FacilitadorModel();
-        $facilitadoresData = $facilitadores->select('id_facilitador,ci,concat(nombres," ",paterno," ",materno) as nombre_facilitador')
-            ->findAll();
-        if ($curso->find($id) == null) {
+        $capacitaciones = new MaestroCapacitacionesModel();
+        if ($capacitaciones->find($id) == null) {
             throw PageNotFoundException::forPageNotFound();
         }
-        $dataCurso = $curso->find($id);
+
+        $dataCapacitaciones = $capacitaciones->find($id);
         $data = [
-            'title' => 'Editar facilitador',
+            'title' => 'Editar capacitacion',
             'validation' => $validation,
-            'curso' =>  $dataCurso,
-            'facilitadores' => $facilitadoresData
+            'capacitaciones' =>  $dataCapacitaciones,
+            'cursos' => $curso->findAll()
         ];
-        return $this->templater->view('cursos/edit', $data);
+        return $this->templater->view('capacitaciones/listado/edit', $data);
     }
     public function create()
     {
-        var_dump($_REQUEST);
         $newCapacitacion = new MaestroCapacitacionesModel();
-        if ($this->validate('listado')) {
+        if ($this->validate('listadoCapacitaciones')) {
             $newCapacitacion->insert([
                 'id_curso' => trim($this->request->getPost('id_curso')),
                 'fecha_ini' => $this->request->getPost('fecha_ini'),
@@ -88,30 +86,27 @@ class ListadoController extends ResourcePresenter
 
     public function update($id = null)
     {
-        $_REQUEST['id'] = $id;
-        $newFacilitador = new CursosModel();
-        if (!$newFacilitador->find($id)) {
+        $capacitacion = new MaestroCapacitacionesModel();
+        if (!$capacitacion->find($id)) {
             throw PageNotFoundException::forPageNotFound();
         }
-        if ($this->validate('cursos')) {
-            $newFacilitador->update($id, [
-                'nombre_curso' => trim($this->request->getPost('nombre_curso')),
-                'modalidad' => $this->request->getPost('modalidad'),
-                'precio' => trim($this->request->getPost('precio')),
-                'id_facilitador' => $this->request->getPost('id_facilitador'),
+        if ($this->validate('listadoCapacitaciones')) {
+            $capacitacion->update($id, [
+                'id_curso' => trim($this->request->getPost('id_curso')),
+                'fecha_ini' => $this->request->getPost('fecha_ini'),
+                'fecha_fin' => $this->request->getPost('fecha_fin'),
             ]);
-            return redirect()->to('/cursos')->with('message', 'Curso editado correctamente.');
+            return redirect()->to('/capacitaciones/listado')->with('message', 'Capacitacion editado correctamente.');
         }
         return redirect()->back()->withInput();
     }
     public function delete($id = null)
     {
-        $curso = new CursosModel();
-        if ($curso->find($id) == null) {
+        $capacitacion = new MaestroCapacitacionesModel();
+        if ($capacitacion->find($id) == null) {
             throw PageNotFoundException::forPageNotFound();
         }
-        $cursoName = $curso->select('nombre_curso')->find($id);
-        $curso->delete($id);
-        return redirect()->to('/cursos')->with('message', 'Curso ' . $cursoName['nombre_curso'] . ' eliminado correctamente.');
+        $capacitacion->delete($id);
+        return redirect()->to('/capacitaciones/listado')->with('message', 'Capacitacion eliminada correctamente.');
     }
 }

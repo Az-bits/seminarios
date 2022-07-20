@@ -8,17 +8,16 @@ class DetalleCapacitacionesModel extends Model
 {
     protected $DBGroup          = 'default';
     protected $table            = 'det_capacitaciones';
-    protected $primaryKey       = 'id_det_capaticacion';
+    protected $primaryKey       = 'id_det_capacitacion';
     protected $useAutoIncrement = true;
     protected $insertID         = 0;
     protected $returnType       = 'array';
     protected $useSoftDeletes   = false;
     protected $protectFields    = true;
     protected $allowedFields    = [
-        // 'nombre_curso',
-        // 'modalidad',
-        // 'precio',
-        // 'id_facilitador'
+        'id_mae_capacitacion',
+        'id_participante',
+
     ];
 
     // Dates

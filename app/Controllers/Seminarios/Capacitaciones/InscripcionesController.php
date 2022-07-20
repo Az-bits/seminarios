@@ -1,15 +1,17 @@
 <?php
 
-namespace App\Controllers\Seminarios;
+namespace App\Controllers\Seminarios\Capacitaciones;
 
 use App\Models\CursosModel;
 use \CodeIgniter\Exceptions\PageNotFoundException;
 use App\Libraries\Templater;
+use App\Models\DetalleCapacitacionesModel;
 use App\Models\FacilitadorModel;
 use App\Models\MaestroCapacitacionesModel;
+use App\Models\ParticipantesModel;
 use CodeIgniter\RESTful\ResourcePresenter;
 
-class CapacitacionesController extends ResourcePresenter
+class InscripcionesController extends ResourcePresenter
 {
     protected $templater;
     public function __construct()
@@ -18,102 +20,99 @@ class CapacitacionesController extends ResourcePresenter
     }
     public function index()
     {
-        $capacitacion  = new MaestroCapacitacionesModel();
-        $capacitacionData = $capacitacion->select('mae_capacitaciones.*,nombre_curso')
-            ->join('cursos as c', 'c.id_curso= mae_capacitaciones.id_curso')
-            ->join('det_capacitaciones as d', 'd.id_mae_capacitacion = mae_capacitaciones.id_mae_capacitacion')
+        $capacitacion  = new DetalleCapacitacionesModel();
+        $capacitacionData = $capacitacion->select('id_det_capacitacion,  concat(nombres," ",paterno," ",materno) as nombre_participante ,nombre_curso')
+            ->join('mae_capacitaciones m', 'det_capacitaciones.id_mae_capacitacion = m.id_mae_capacitacion')
+            ->join('participantes p', 'det_capacitaciones.id_participante = p.id_participante ')
+            ->join('cursos c', 'c.id_curso = m.id_curso')
             ->paginate(5);
         $data = [
-            'title' => 'Capacitaciones',
+            'title' => 'Inscripciones a capacitaciones',
             'capacitaciones' => $capacitacionData,
             'pager' => $capacitacion->pager
         ];
-        // var_dump($data['cursos']);
-        return $this->templater->view('capacitaciones/ListCapacitaciones', $data);
+        return $this->templater->view('capacitaciones/inscripciones/ListInscritos', $data);
     }
     public function new()
     {
         session(); //para que aparescan la lista de errores de validacion esto es un bug
         $validation =  \Config\Services::validation();
-        $facilitadores = new FacilitadorModel();
-        $facilitadoresData = $facilitadores->select('id_facilitador,ci,concat(nombres," ",paterno," ",materno) as nombre_facilitador')
+        $participantes =  new ParticipantesModel();
+        $capacitacion = new MaestroCapacitacionesModel();
+        $capacitacionesData = $capacitacion->select('id_mae_capacitacion ,nombre_curso ')
+            ->join('cursos c', 'mae_capacitaciones.id_curso = c.id_curso')
             ->findAll();
-        $curso  = [
-            'id_curso' => null,
-            'nombre_curso' => '',
-            'modalidad' => '',
-            'precio' => '',
-            'id_facilitador' => null
+        $detCapacitaciones  = [
+            'id_det_capacitacion' => null,
+            'id_participante' => null,
+            'id_mae_capacitacion' => null,
         ];
         $data = [
-            'title' => 'Nuevo Curso',
-            'curso' => $curso,
-            'facilitadores' => $facilitadoresData,
+            'title' => 'Nueva inscripcion',
+            'participantes' => $participantes->select('id_participante,concat(nombres," ",paterno," ",materno) as nombre_participante,ci')->findAll(),
+            'capacitaciones' => $capacitacionesData,
+            'detCapacitaciones' => $detCapacitaciones,
             'validation' => $validation
         ];
-        return $this->templater->view('cursos/new', $data);
+        return $this->templater->view('capacitaciones/inscripciones/new', $data);
     }
     public function edit($id = null)
     {
         session();
         $validation =  \Config\Services::validation();
-        $curso = new CursosModel();
-        $facilitadores = new FacilitadorModel();
-        $facilitadoresData = $facilitadores->select('id_facilitador,ci,concat(nombres," ",paterno," ",materno) as nombre_facilitador')
+        $capacitacion = new MaestroCapacitacionesModel();
+        $participantes =  new ParticipantesModel();
+        $detCapacitaciones = new DetalleCapacitacionesModel();
+        $capacitacionesData = $capacitacion->select('id_mae_capacitacion ,nombre_curso ')
+            ->join('cursos c', 'mae_capacitaciones.id_curso = c.id_curso')
             ->findAll();
-        if ($curso->find($id) == null) {
+        if ($detCapacitaciones->find($id) == null) {
             throw PageNotFoundException::forPageNotFound();
         }
-        $dataCurso = $curso->find($id);
         $data = [
-            'title' => 'Editar facilitador',
+            'title' => 'Editar Inscripcion',
             'validation' => $validation,
-            'curso' =>  $dataCurso,
-            'facilitadores' => $facilitadoresData
+            'participantes' => $participantes->select('id_participante,concat(nombres," ",paterno," ",materno) as nombre_participante,ci')->findAll(),
+            'detCapacitaciones' =>  $detCapacitaciones->find($id),
+            'capacitaciones' => $capacitacionesData
         ];
-        return $this->templater->view('cursos/edit', $data);
+        return $this->templater->view('capacitaciones/inscripciones/edit', $data);
     }
     public function create()
     {
-        $newCurso = new CursosModel();
-        if ($this->validate('cursos')) {
-            $newCurso->insert([
-                'nombre_curso' => trim($this->request->getPost('nombre_curso')),
-                'modalidad' => $this->request->getPost('modalidad'),
-                'precio' => trim($this->request->getPost('precio')),
-                'id_facilitador' => $this->request->getPost('id_facilitador'),
+        $newInscripcion = new DetalleCapacitacionesModel();
+        if ($this->validate('inscricionesCapacitaciones')) {
+            $newInscripcion->insert([
+                'id_mae_capacitacion' => $this->request->getPost('id_mae_capacitacion'),
+                'id_participante' => $this->request->getPost('id_participante')
             ]);
-            return redirect()->to('/cursos')->with('message', 'Curso creado correctamente.');
+            return redirect()->to('/capacitaciones/inscripciones')->with('message', 'Participante inscrito correctamente.');
         }
         return redirect()->back()->withInput();
     }
 
     public function update($id = null)
     {
-        $_REQUEST['id'] = $id;
-        $newFacilitador = new CursosModel();
-        if (!$newFacilitador->find($id)) {
+        $inscripcion = new DetalleCapacitacionesModel();
+        if (!$inscripcion->find($id)) {
             throw PageNotFoundException::forPageNotFound();
         }
-        if ($this->validate('cursos')) {
-            $newFacilitador->update($id, [
-                'nombre_curso' => trim($this->request->getPost('nombre_curso')),
-                'modalidad' => $this->request->getPost('modalidad'),
-                'precio' => trim($this->request->getPost('precio')),
-                'id_facilitador' => $this->request->getPost('id_facilitador'),
+        if ($this->validate('inscricionesCapacitaciones')) {
+            $inscripcion->update($id, [
+                'id_mae_capacitacion' => $this->request->getPost('id_mae_capacitacion'),
+                'id_participante' => $this->request->getPost('id_participante')
             ]);
-            return redirect()->to('/cursos')->with('message', 'Curso editado correctamente.');
+            return redirect()->to('/capacitaciones/inscripciones')->with('message', 'Inscripcion editada correctamente.');
         }
         return redirect()->back()->withInput();
     }
     public function delete($id = null)
     {
-        $curso = new CursosModel();
-        if ($curso->find($id) == null) {
+        $inscripcion = new DetalleCapacitacionesModel();
+        if ($inscripcion->find($id) == null) {
             throw PageNotFoundException::forPageNotFound();
         }
-        $cursoName = $curso->select('nombre_curso')->find($id);
-        $curso->delete($id);
-        return redirect()->to('/cursos')->with('message', 'Curso ' . $cursoName['nombre_curso'] . ' eliminado correctamente.');
+        $inscripcion->delete($id);
+        return redirect()->to('/capacitaciones/inscripciones')->with('message', 'Inscripcion eliminada correctamente.');
     }
 }

@@ -25,10 +25,11 @@
                 <td><?= $value['fecha_fin'] ?></td>
                 <td><?= $value['cantidad'] ?></td>
                 <td>
-                    <form action="/capacitaciones/delete/<?= $value['id_mae_capacitacion'] ?>" method="POST">
-                        <button disabled="true" class="btn btn-danger btn-sm float-end ms-2" type="submit" data-bs-toggle="tooltip" data-bs-placement="top" title="Eliminar"><i class="fa-solid fa-trash "></i></button>
+                    <form action="/capacitaciones/listado/delete/<?= $value['id_mae_capacitacion'] ?>" method="POST">
+                        <!-- <button disabled class="btn btn-danger btn-sm float-end ms-2" type="submit" data-bs-toggle="tooltip" data-bs-placement="top" title="Eliminar"><i class="fa-solid fa-trash "></i></button> -->
+                        <button <?= $value['cantidad'] == 0 ?: "disabled"  ?> class="btn btn-danger btn-sm float-end ms-2" type="submit" data-bs-toggle="tooltip" data-bs-placement="top" title="Eliminar"><i class="fa-solid fa-trash "></i></button>
                     </form>
-                    <a class="btn btn-primary btn-sm float-end " href="/capacitaciones/edit/<?= $value['id_mae_capacitacion'] ?>" data-bs-toggle="tooltip" title="Editar"><i class="fa-solid fa-pencil"></i></a>
+                    <a class="btn btn-primary btn-sm float-end " href="/capacitaciones/listado/edit/<?= $value['id_mae_capacitacion'] ?>" data-bs-toggle="tooltip" title="Editar"><i class="fa-solid fa-pencil"></i></a>
                 </td>
             </tr>
         <?php endforeach ?>

@@ -62,8 +62,15 @@ class Validation extends BaseConfig
         'correo' => 'required|min_length[3]|max_length[20]|is_unique[participantes.correo,id_participante,{id}]|valid_email',
         'comple' => ['label' => 'complemento', 'rules' => 'max_length[3]'],
     ];
-    public $listado = ['id_curso' => 'required'];
-    public $inscriciones = [];
+    public $listadoCapacitaciones = [
+        'fecha_ini' => ['label' => 'fecha inicio', 'rules' => 'required|valid_date'],
+        'fecha_fin' => ['label' => 'fecha fin', 'rules' => 'required|valid_date'],
+        'id_curso' => ['label' => 'curso', 'rules' => 'required|is_natural_no_zero'],
+    ];
+    public $inscricionesCapacitaciones = [
+        'id_mae_capacitacion' => ['label' => 'curso', 'rules' => 'required|is_natural_no_zero'],
+        'id_participante' => ['label' => 'participante', 'rules' => 'required|is_natural_no_zero'],
+    ];
 
     //--------------------------------------------------------------------
     // Rules

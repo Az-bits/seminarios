@@ -8,7 +8,7 @@ class MaestroCapacitacionesModel extends Model
 {
     protected $DBGroup          = 'default';
     protected $table            = 'mae_capacitaciones';
-    protected $primaryKey       = 'id_mae_capaticacion';
+    protected $primaryKey       = 'id_mae_capacitacion';
     protected $useAutoIncrement = true;
     protected $insertID         = 0;
     protected $returnType       = 'array';

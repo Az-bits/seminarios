@@ -21,7 +21,7 @@ class CapacitacionesController extends ResourcePresenter
         $capacitacion  = new MaestroCapacitacionesModel();
         $capacitacionData = $capacitacion->select('mae_capacitaciones.*,nombre_curso')
             ->join('cursos as c', 'c.id_curso= mae_capacitaciones.id_curso')
-            ->join('det_capacitaciones as d', 'd.id_mae_capacitacion = mae_capacitaciones.id_mae_capacitacion')
+            ->join('det_capacitaciones as d', 'd.id_mae_capacitacion = mae_capacitaciones.id_mae_capacitacion', 'left')
             ->paginate(5);
         $data = [
             'title' => 'Capacitaciones',
