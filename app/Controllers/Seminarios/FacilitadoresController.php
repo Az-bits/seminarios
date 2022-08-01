@@ -21,6 +21,8 @@ class FacilitadoresController extends ResourcePresenter
             ->join('cursos c', 'facilitadores.id_facilitador = c.id_facilitador', 'left')
             ->groupBy('c.id_facilitador ')
             ->paginate(5);
+        // var_dump(json_encode($facilitadorData));
+        // var_dump($facilitadorData);
         $data = [
             'title' => 'Facilitadores',
             'facilitador' => $facilitadorData,
