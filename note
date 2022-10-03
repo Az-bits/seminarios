@@ -1,4 +1,5 @@
 rN0IhLIIYipQFM4LLOoQ6aY15BI+cu7Fn+3GwDyHc5zOyA/+xdIVU3cQ5LMOwp6LRf95omJunmCo4UiYEDWU+DzDZJS0S9aJttZSdZKLjx0
+
 <VirtualHost *:80>
     ##ServerAdmin webmaster@dummy-host2.example.com
     DocumentRoot "C:/xampp/htdocs/seminarios/public"
@@ -9,3 +10,18 @@ rN0IhLIIYipQFM4LLOoQ6aY15BI+cu7Fn+3GwDyHc5zOyA/+xdIVU3cQ5LMOwp6LRf95omJunmCo4UiY
     ##ErrorLog "logs/dummy-host2.example.com-error.log"
     ##CustomLog "logs/dummy-host2.example.com-access.log" common
 </VirtualHost>
+
+"php": {
+    "prefix": "php",
+    "body": [
+        "<?php $1 ?>"
+    ],
+    "description": "php tag"
+},
+"php7": {
+    "prefix": "php7",
+    "body": [
+        "<?= $1 ?>"
+    ],
+    "description": "php7 tag"
+}
